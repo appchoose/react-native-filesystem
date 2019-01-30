@@ -6,13 +6,16 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class RNFileSystem extends ReactContextBaseJavaModule {
 
@@ -83,6 +86,23 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
     }
   }
 
+
+  public static String convertStreamToString(InputStream is) throws Exception {
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+      StringBuilder sb = new StringBuilder();
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        sb.append(line).append("\n");
+      }
+      reader.close();
+      return sb.toString();
+      } catch (IOException ignored) {
+        return null;
+      }
+  }
+
+
   public String readFile(String relativePath, Storage storage) throws FileNotFoundException {
     String baseDir = baseDirForStorage(storage);
     File location = new File(baseDir + "/" + relativePath);
@@ -91,7 +111,15 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
       throw new FileNotFoundException();
     }
 
-    return new Scanner(location).useDelimiter("\\Z").next();
+    FileInputStream fin = new FileInputStream(location);
+    try{
+    String ret = convertStreamToString(fin);
+    //Make sure you close all streams.
+    fin.close();    
+    return ret;
+} catch (Exception e) {
+  return null;
+} 
   }
 
   public boolean fileExists(String relativePath, Storage storage) {

@@ -67,6 +67,10 @@ NSString *const STORAGE_TEMPORARY = @"TEMPORARY";
   return [NSString stringWithContentsOfFile:[fullPath path] encoding:NSUTF8StringEncoding error:nil];
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
 + (BOOL)fileExists:(NSString*)relativePath inStorage:(NSString*)storage {
   NSURL *baseDir = [RNFileSystem baseDirForStorage:storage];
   NSURL *fullPath = [baseDir URLByAppendingPathComponent:relativePath];
