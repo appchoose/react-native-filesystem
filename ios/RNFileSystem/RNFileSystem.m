@@ -1,6 +1,7 @@
 #import "RNFileSystem.h"
 
 NSString *const STORAGE_BACKED_UP = @"BACKED_UP";
+NSString *const STORAGE_SUPPORT   = @"SUPPORT";
 NSString *const STORAGE_IMPORTANT = @"IMPORTANT";
 NSString *const STORAGE_AUXILIARY = @"AUXILIARY";
 NSString *const STORAGE_TEMPORARY = @"TEMPORARY";
@@ -9,6 +10,7 @@ NSString *const STORAGE_TEMPORARY = @"TEMPORARY";
 
 - (NSDictionary<NSString *, NSString *> *)constantsToExport {
   return @{STORAGE_BACKED_UP: [[RNFileSystem baseDirForStorage:STORAGE_BACKED_UP] path],
+           STORAGE_SUPPORT: [[RNFileSystem baseDirForStorage:STORAGE_SUPPORT] path],
            STORAGE_IMPORTANT: [[RNFileSystem baseDirForStorage:STORAGE_IMPORTANT] path],
            STORAGE_AUXILIARY: [[RNFileSystem baseDirForStorage:STORAGE_AUXILIARY] path],
            STORAGE_TEMPORARY: [[RNFileSystem baseDirForStorage:STORAGE_TEMPORARY] path]};
@@ -20,6 +22,9 @@ NSString *const STORAGE_TEMPORARY = @"TEMPORARY";
   if ([storage isEqual:STORAGE_BACKED_UP]) {
     NSURL *docsDir = [fileManager URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
     return [docsDir URLByAppendingPathComponent:@"RNFS-BackedUp"];
+  }  else if ([storage isEqual:STORAGE_SUPPORT]) {
+    NSURL *cachesDir = [fileManager URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
+    return [cachesDir URLByAppendingPathComponent:@"RNFS-Support"];
   } else if ([storage isEqual:STORAGE_IMPORTANT]) {
     NSURL *cachesDir = [fileManager URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
     return [cachesDir URLByAppendingPathComponent:@"RNFS-Important"];

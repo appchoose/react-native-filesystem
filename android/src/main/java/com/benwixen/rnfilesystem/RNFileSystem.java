@@ -25,6 +25,7 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
 
   public enum Storage {
     BACKED_UP,
+    SUPPORT,
     IMPORTANT,
     AUXILIARY,
     TEMPORARY
@@ -34,6 +35,7 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
   public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
     constants.put(Storage.BACKED_UP.toString(), baseDirForStorage(Storage.BACKED_UP));
+    constants.put(Storage.SUPPORT.toString(), baseDirForStorage(Storage.SUPPORT));
     constants.put(Storage.IMPORTANT.toString(), baseDirForStorage(Storage.IMPORTANT));
     constants.put(Storage.AUXILIARY.toString(), baseDirForStorage(Storage.AUXILIARY));
     constants.put(Storage.TEMPORARY.toString(), baseDirForStorage(Storage.TEMPORARY));
@@ -49,6 +51,8 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
     switch (storage) {
       case BACKED_UP:
         return getReactApplicationContext().getFilesDir().getAbsolutePath() + "/RNFS-BackedUp";
+      case SUPPORT:
+        return getReactApplicationContext().getFilesDir().getAbsolutePath() + "/RNFS-SUPPORT";
       case IMPORTANT:
         return getReactApplicationContext().getFilesDir().getAbsolutePath() + "/RNFS-Important";
       case AUXILIARY:
