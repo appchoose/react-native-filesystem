@@ -80,7 +80,9 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
     OutputStreamWriter output = null;
     try {
       output = new OutputStreamWriter(new FileOutputStream(destination));
-      output.write(content);
+      if (content != null) {
+        output.write(content);
+      }
     } finally {
       try {
         if (output != null) {
@@ -161,7 +163,9 @@ public class RNFileSystem extends ReactContextBaseJavaModule {
   @ReactMethod
   public void writeToFile(String relativePath, String content, String storage, Promise promise) {
     try {
-      writeToFile(relativePath, content, Storage.valueOf(storage));
+      if (content != null) {
+          writeToFile(relativePath, content, Storage.valueOf(storage));
+      }
       promise.resolve(true);
     } catch (IOException e) {
       promise.reject("ERROR", e.getMessage());
